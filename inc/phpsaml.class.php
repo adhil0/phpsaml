@@ -81,18 +81,17 @@ class PluginPhpsamlPhpsaml
 		if (isset($config['jit']) && $config['jit'] == 1){
 			$user = new User();
 			if(!$user->getFromDBbyEmail(self::$nameid)){
-				if ((!empty(SELF::$userdata['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'][0])) && (!empty(SELF::$userdata['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'][0]))){
-					
+				if ((!empty(SELF::$userdata['givenName'][0])) && (!empty(SELF::$userdata['email'][0])) && (!empty(SELF::$userdata['sn'][0]))){					
 					$password = bin2hex(random_bytes(20));
 					
 					$input = array(
-						"name" => SELF::$userdata['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'][0],
-						"realname" => SELF::$userdata['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'][0],
-						"firstname" => SELF::$userdata['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/firstname'][0],
-						"_useremails" => array(SELF::$userdata['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'][0]),
+						"name" => SELF::$userdata['uid'][0],
+						"realname" => SELF::$userdata['sn'][0],
+						"firstname" => SELF::$userdata['givenName'][0],
+						"_useremails" => array(SELF::$userdata['email'][0]),
 						"password" => $password,
 						"password2" => $password,
-					);
+					);	
 					
 					$newuser = new User();
 					
